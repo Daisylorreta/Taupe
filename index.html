@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taupe — Menu</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#F1EAE0;
+    --panel:#FBF8F3;
+    --taupe:#8B7D6B;
+    --taupe-dark:#5C5245;
+    --ink:#39322A;
+    --rust:#A9683F;
+    --line:#D9CDBC;
+  }
+
+  * { box-sizing: border-box; }
+
+  body{
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  .display{
+    font-family: 'Fraunces', serif;
+  }
+
+  /* ---------- Header / Medallion ---------- */
+  .menu-header{
+    padding: 4.5rem 1rem 3rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .medallion{
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 1.5rem;
+    border: 1px solid var(--taupe);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .medallion::before{
+    content:"";
+    position:absolute;
+    inset: 8px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+  .medallion span{
+    font-family:'Fraunces', serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    color: var(--taupe-dark);
+    letter-spacing: 1px;
+  }
+
+  .menu-header h1{
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    color: var(--taupe-dark);
+  }
+
+  .menu-header .tagline{
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--taupe);
+    font-weight: 500;
+  }
+
+  .rule{
+    width: 60px;
+    height: 1px;
+    background: var(--taupe);
+    margin: 1.6rem auto 0;
+    opacity: 0.6;
+  }
+
+  /* ---------- Category grid ---------- */
+  .menu-wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.25rem 6rem;
+  }
+
+  .category-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.1rem;
+  }
+  @media (max-width: 700px){
+    .category-grid{ grid-template-columns: 1fr; }
+  }
+
+  .category{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: box-shadow .35s ease, transform .35s ease, border-color .35s ease;
+  }
+
+  .category:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -18px rgba(57,50,42,0.35);
+    border-color: var(--taupe);
+  }
+
+  .category-trigger{
+    width: 100%;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    padding: 1.5rem 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .category-trigger .cat-name{
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .category-trigger .cat-meta{
+    display:flex;
+    align-items:center;
+    gap: 0.9rem;
+  }
+
+  .cat-count{
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--taupe);
+  }
+
+  .cat-icon{
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--taupe);
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform .35s ease, background .35s ease;
+    flex-shrink: 0;
+  }
+  .cat-icon svg{
+    width: 11px; height: 11px;
+    stroke: var(--taupe-dark);
+    transition: transform .35s ease;
+  }
+
+  .category.open .cat-icon{
+    background: var(--taupe-dark);
+    border-color: var(--taupe-dark);
+  }
+  .category.open .cat-icon svg{
+    stroke: var(--panel);
+    transform: rotate(45deg);
+  }
+
+  /* subtle hover preview */
+  .category-trigger:hover .cat-name{
+    color: var(--rust);
+  }
+
+  /* ---------- Collapsible panel ---------- */
+  .cat-panel{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  }
+  .category.open .cat-panel{
+    max-height: 900px;
+  }
+
+  .cat-panel-inner{
+    padding: 0 1.6rem 1.6rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.2rem;
+  }
+
+  .dish{
+    padding: 0.85rem 0;
+    border-bottom: 1px dashed var(--line);
+    display: flex;
+    gap: 0.9rem;
+  }
+  .dish:last-child{ border-bottom: 0; padding-bottom: 0.2rem; }
+
+  .dish-photo{
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--line);
+    margin-top: 0.1rem;
+  }
+  .dish-photo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .dish-body{
+    flex: 1;
+    min-width: 0;
+  }
+
+  .dish-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .dish-name{
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .dish-price{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--rust);
+    white-space: nowrap;
+    font-size: 0.98rem;
+  }
+
+  .dish-desc{
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: var(--taupe-dark);
+    font-style: italic;
+    line-height: 1.45;
+    max-width: 46ch;
+  }
+
+  .dish-tag{
+    display:inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--taupe);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 1px 8px;
+    margin-top: 0.35rem;
+    margin-right: 0.3rem;
+  }
+
+  /* ---------- Filters ---------- */
+  .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:.55rem;
+    margin-bottom:1.6rem;
+  }
+  .filter-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--taupe-dark);
+    font-size:.74rem;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    padding:.5rem 1.05rem;
+    border-radius:30px;
+    cursor:pointer;
+    transition:all .25s ease;
+  }
+  .filter-btn:hover{ border-color:var(--taupe); color:var(--rust); }
+  .filter-btn.active{
+    background:var(--taupe-dark);
+    border-color:var(--taupe-dark);
+    color:var(--panel);
+  }
+  .filter-btn:focus-visible{ outline:2px solid var(--rust); outline-offset:2px; }
+
+  .is-hidden{ display:none !important; }
+
+  .no-results{
+    text-align:center;
+    color:var(--taupe);
+    font-style:italic;
+    padding:2rem 0;
+  }
+
+  /* ---------- Clickable photos + modal ---------- */
+  .dish-photo{ cursor:zoom-in; position:relative; }
+  .dish-photo img{ transition:transform .35s ease; }
+  .dish-photo:hover img{ transform:scale(1.08); }
+  .dish-photo:focus-visible{ outline:2px solid var(--rust); outline-offset:2px; }
+
+  .dish-modal .modal-content{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .dish-modal .modal-img{
+    width:100%;
+    max-height:60vh;
+    object-fit:cover;
+    display:block;
+    background:var(--line);
+  }
+  .dish-modal .modal-body{ padding:1.4rem 1.6rem 1.7rem; }
+  .dish-modal .m-name{
+    font-family:'Fraunces',serif;
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--ink);
+    margin:0;
+  }
+  .dish-modal .m-price{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--rust);
+    font-size:1.25rem;
+    white-space:nowrap;
+  }
+  .dish-modal .m-desc{
+    margin:.5rem 0 .6rem;
+    font-style:italic;
+    color:var(--taupe-dark);
+  }
+  .dish-modal .btn-close{
+    position:absolute;
+    top:.8rem; right:.8rem;
+    z-index:5;
+    background-color:var(--panel);
+    border-radius:50%;
+    padding:.6rem;
+    opacity:.9;
+  }
+
+  /* ---------- Reservation ---------- */
+  html{ scroll-behavior:smooth; }
+  .reserve-link{
+    display:inline-block;
+    margin-top:1.4rem;
+    font-size:.74rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--panel);
+    background:var(--taupe-dark);
+    padding:.7rem 1.5rem;
+    border-radius:30px;
+    text-decoration:none;
+    transition:background .25s ease;
+  }
+  .reserve-link:hover{ background:var(--rust); color:var(--panel); }
+
+  .reserve{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 1.25rem 5rem;
+  }
+  .reserve-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:2.4rem 2rem 2.2rem;
+  }
+  @media (min-width:700px){ .reserve-card{ padding:3rem 3.2rem 2.8rem; } }
+  .reserve-card h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--taupe-dark);
+    font-size:2rem;
+    text-align:center;
+    margin-bottom:.3rem;
+  }
+  .reserve-sub{
+    text-align:center;
+    color:var(--taupe);
+    font-size:.8rem;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-bottom:2rem;
+  }
+  .reserve-card .form-label{
+    font-size:.7rem;
+    letter-spacing:1.4px;
+    text-transform:uppercase;
+    color:var(--taupe-dark);
+    margin-bottom:.35rem;
+  }
+  .reserve-card .form-control,
+  .reserve-card .form-select{
+    background-color:var(--cream);
+    border:1px solid var(--line);
+    border-radius:2px;
+    color:var(--ink);
+    padding:.7rem .85rem;
+  }
+  .reserve-card .form-control:focus,
+  .reserve-card .form-select:focus{
+    border-color:var(--taupe);
+    box-shadow:0 0 0 3px rgba(139,125,107,.22);
+    background-color:#fff;
+  }
+  .btn-reserve{
+    background:var(--taupe-dark);
+    color:var(--panel);
+    border:0;
+    border-radius:30px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:.78rem;
+    padding:.9rem 2.4rem;
+    transition:background .25s ease;
+  }
+  .btn-reserve:hover{ background:var(--rust); color:var(--panel); }
+  .btn-whatsapp{
+    background:transparent;
+    border:1px solid var(--taupe-dark);
+    color:var(--taupe-dark);
+    border-radius:30px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    font-size:.74rem;
+    padding:.75rem 1.6rem;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .btn-whatsapp:hover{ background:var(--taupe-dark); color:var(--panel); }
+
+  .confirm{ text-align:center; padding:.5rem 0; }
+  .confirm .tick{
+    width:56px;height:56px;margin:0 auto 1rem;
+    border:1px solid var(--taupe);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .confirm .tick svg{ width:22px;height:22px;stroke:var(--taupe-dark); }
+  .confirm dl{
+    display:grid;grid-template-columns:auto 1fr;gap:.45rem 1.2rem;
+    max-width:340px;margin:1.4rem auto;text-align:left;
+  }
+  .confirm dt{
+    font-size:.68rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--taupe);
+    font-weight:500;align-self:center;
+  }
+  .confirm dd{ margin:0;color:var(--ink); }
+
+  footer.menu-footer{
+    text-align:center;
+    padding-bottom: 3rem;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--taupe);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .category, .cat-panel, .cat-icon, .cat-icon svg, .category-trigger .cat-name{
+      transition: none !important;
+    }
+  }
+
+  .category-trigger:focus-visible{
+    outline: 2px solid var(--rust);
+    outline-offset: -2px;
+  }
+</style>
+</head>
+<body>
+
+<header class="menu-header">
+  <div class="medallion"><span>T</span></div>
+  <h1 class="display">Taupe</h1>
+  <div class="tagline">Kitchen &amp; Bar</div>
+  <div class="rule"></div>
+  <a href="#reserve" class="reserve-link">Reserve a table</a>
+</header>
+
+<main class="menu-wrap">
+  <div class="filter-bar" id="filterBar" role="group" aria-label="Filter menu by dietary option">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
+    <button class="filter-btn" data-filter="gluten-free">Gluten-free</button>
+    <button class="filter-btn" data-filter="non-alcoholic">Non-alcoholic</button>
+  </div>
+
+  <div class="category-grid" id="categoryGrid">
+
+    <!-- Starters -->
+    <section class="category" data-category>
+      <button class="category-trigger" aria-expanded="false">
+        <span class="cat-name">Starters</span>
+        <span class="cat-meta">
+          <span class="cat-count">4 dishes</span>
+          <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </span>
+      </button>
+      <div class="cat-panel">
+        <div class="cat-panel-inner">
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Corn_fritters_with_joghurt_coriander_dip.jpg?width=250" alt="Corn fritters" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Charred Corn &amp; Feta Fritters</span>
+                <span class="dish-price">$9</span>
+              </div>
+              <p class="dish-desc">Sweetcorn, whipped feta, spring onion, smoked paprika oil.</p>
+              <span class="dish-tag">Vegetarian</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Smoked_scallop_appetizer.jpg?width=250" alt="Seared scallops" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Seared Scallops</span>
+                <span class="dish-price">$16</span>
+              </div>
+              <p class="dish-desc">Brown butter, cauliflower purée, crisp pancetta, chive oil.</p>
+              <span class="dish-tag">Gluten-free</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Carpaccio_of_Beetroot_(7264659838).jpg?width=250" alt="Roasted beet carpaccio" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Roasted Beet Carpaccio</span>
+                <span class="dish-price">$11</span>
+              </div>
+              <p class="dish-desc">Thin-sliced beets, goat cheese, candied walnuts, orange vinaigrette.</p>
+              <span class="dish-tag">Vegetarian</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mushroom_tart_with_garnish_and_slivered_cheese.jpg?width=250" alt="Mushroom tartlet" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Smoked Mushroom Tartlet</span>
+                <span class="dish-price">$10</span>
+              </div>
+              <p class="dish-desc">Wild mushrooms, thyme, gruyère, flaky butter pastry.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Mains -->
+    <section class="category" data-category>
+      <button class="category-trigger" aria-expanded="false">
+        <span class="cat-name">Mains</span>
+        <span class="cat-meta">
+          <span class="cat-count">4 dishes</span>
+          <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </span>
+      </button>
+      <div class="cat-panel">
+        <div class="cat-panel-inner">
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grilled_lamb_rack_at_Pushkin_Literature_Restaurant,_Zhong_Guan_Cun_No.1_(20210817181832).jpg?width=250" alt="Herb-crusted lamb rack" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Herb-Crusted Lamb Rack</span>
+                <span class="dish-price">$32</span>
+              </div>
+              <p class="dish-desc">Rosemary jus, roasted root vegetables, potato gratin.</p>
+              <span class="dish-tag">Gluten-free</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2020-01-11_20_23_12_A_meal_of_salmon,_mashed_potatoes_and_asparagus_in_Hamilton_Township,_Mercer_County,_New_Jersey.jpg?width=250" alt="Pan-seared salmon" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Pan-Seared Salmon</span>
+                <span class="dish-price">$27</span>
+              </div>
+              <p class="dish-desc">Lemon butter sauce, asparagus, saffron rice.</p>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mushroom_Risotto_(4790041234).jpg?width=250" alt="Wild mushroom risotto" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Wild Mushroom Risotto</span>
+                <span class="dish-price">$21</span>
+              </div>
+              <p class="dish-desc">Arborio rice, porcini, parmesan, truffle oil.</p>
+              <span class="dish-tag">Vegetarian</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Braised_short_ribs_of_beef_tumeric_mashed_potatoes_spiced_shoestring_potatoes.jpg?width=250" alt="Braised short rib" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Braised Short Rib</span>
+                <span class="dish-price">$29</span>
+              </div>
+              <p class="dish-desc">Red wine reduction, creamy polenta, charred greens.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Desserts -->
+    <section class="category" data-category>
+      <button class="category-trigger" aria-expanded="false">
+        <span class="cat-name">Desserts</span>
+        <span class="cat-meta">
+          <span class="cat-count">3 dishes</span>
+          <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </span>
+      </button>
+      <div class="cat-panel">
+        <div class="cat-panel-inner">
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Burnt_Bake_Cheesecake_Khas_Basque_Spanyol.jpg?width=250" alt="Basque burnt cheesecake" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Basque Burnt Cheesecake</span>
+                <span class="dish-price">$9</span>
+              </div>
+              <p class="dish-desc">Caramelized top, vanilla bean custard, berry compote.</p>
+              <span class="dish-tag">Vegetarian</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Chocolate_lava_cake.jpg?width=250" alt="Dark chocolate fondant" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Dark Chocolate Fondant</span>
+                <span class="dish-price">$10</span>
+              </div>
+              <p class="dish-desc">Molten center, sea salt, vanilla bean ice cream.</p>
+              <span class="dish-tag">Vegetarian</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Poire_au_vin.JPG?width=250" alt="Spiced poached pear" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Spiced Poached Pear</span>
+                <span class="dish-price">$8</span>
+              </div>
+              <p class="dish-desc">Red wine, cinnamon, mascarpone, toasted hazelnuts.</p>
+              <span class="dish-tag">Vegetarian</span><span class="dish-tag">Gluten-free</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Drinks -->
+    <section class="category" data-category>
+      <button class="category-trigger" aria-expanded="false">
+        <span class="cat-name">Drinks</span>
+        <span class="cat-meta">
+          <span class="cat-count">4 options</span>
+          <span class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </span>
+      </button>
+      <div class="cat-panel">
+        <div class="cat-panel-inner">
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Whiskey_Old_Fashioned.jpg?width=250" alt="Taupe Old Fashioned" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Taupe Old Fashioned</span>
+                <span class="dish-price">$14</span>
+              </div>
+              <p class="dish-desc">Bourbon, brown sugar, orange bitters, smoked cherry.</p>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rose_wine.jpg?width=250" alt="House rosé" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">House Rosé, Glass</span>
+                <span class="dish-price">$11</span>
+              </div>
+              <p class="dish-desc">Provence style, dry, notes of peach and citrus.</p>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Espresso_tonic.jpg?width=250" alt="Espresso tonic" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Cold Brew Espresso Tonic</span>
+                <span class="dish-price">$7</span>
+              </div>
+              <p class="dish-desc">Double espresso, tonic water, orange peel.</p>
+              <span class="dish-tag">Non-alcoholic</span>
+            </div>
+          </div>
+
+          <div class="dish">
+            <div class="dish-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/A_glass_of_hibiscus_tea_01.jpg?width=250" alt="Hibiscus and ginger fizz" loading="lazy"></div>
+            <div class="dish-body">
+              <div class="dish-row">
+                <span class="dish-name">Hibiscus &amp; Ginger Fizz</span>
+                <span class="dish-price">$6</span>
+              </div>
+              <p class="dish-desc">House hibiscus syrup, fresh ginger, soda, lime.</p>
+              <span class="dish-tag">Non-alcoholic</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<section class="reserve" id="reserve" aria-labelledby="reserveTitle">
+  <div class="reserve-card">
+
+    <div id="reserveFormWrap">
+      <h2 id="reserveTitle">Reserve a table</h2>
+      <p class="reserve-sub">Open daily &middot; 12:00 &ndash; 22:00</p>
+
+      <form id="reserveForm" class="row g-3" novalidate>
+        <div class="col-md-6">
+          <label for="rName" class="form-label">Full name</label>
+          <input type="text" class="form-control" id="rName" required minlength="2" autocomplete="name">
+          <div class="invalid-feedback">Please enter your name.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="rPhone" class="form-label">Phone number</label>
+          <input type="tel" class="form-control" id="rPhone" required pattern="[0-9+\s\-]{7,18}" autocomplete="tel" placeholder="e.g. 0803 000 0000">
+          <div class="invalid-feedback">Enter a valid phone number.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="rDate" class="form-label">Date</label>
+          <input type="date" class="form-control" id="rDate" required>
+          <div class="invalid-feedback">Pick today or a future date.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="rTime" class="form-label">Time</label>
+          <select class="form-select" id="rTime" required>
+            <option value="" selected disabled>Choose a time</option>
+          </select>
+          <div class="invalid-feedback">Please choose a time.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="rGuests" class="form-label">Guests</label>
+          <select class="form-select" id="rGuests" required></select>
+          <div class="invalid-feedback">Select number of guests.</div>
+        </div>
+        <div class="col-12">
+          <label for="rNotes" class="form-label">Special requests <span style="opacity:.6;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <textarea class="form-control" id="rNotes" rows="3" placeholder="Allergies, celebrations, seating preferences…"></textarea>
+        </div>
+        <div class="col-12 text-center pt-2">
+          <button type="submit" class="btn btn-reserve">Request reservation</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="reserveConfirm" class="confirm is-hidden" aria-live="polite">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2 class="display" style="font-size:1.8rem;color:var(--taupe-dark);font-weight:600">Request received</h2>
+      <p style="color:var(--taupe-dark);margin:0">Thank you, <span id="cName"></span>.</p>
+      <dl>
+        <dt>Date</dt><dd id="cDate"></dd>
+        <dt>Time</dt><dd id="cTime"></dd>
+        <dt>Guests</dt><dd id="cGuests"></dd>
+        <dt>Phone</dt><dd id="cPhone"></dd>
+      </dl>
+      <p id="cNote" style="font-size:.85rem;color:var(--taupe);font-style:italic"></p>
+      <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+        <a id="cWhatsapp" class="btn-whatsapp is-hidden" target="_blank" rel="noopener">Send via WhatsApp</a>
+        <button type="button" class="btn-whatsapp" id="cAgain">Make another</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="menu-footer">Taupe &nbsp;·&nbsp; est. seasonal &nbsp;·&nbsp; ask your server about allergens</footer>
+
+<script>
+  document.querySelectorAll('[data-category]').forEach(function(cat){
+    var trigger = cat.querySelector('.category-trigger');
+    trigger.addEventListener('click', function(){
+      var isOpen = cat.classList.contains('open');
+      // close all others
+      document.querySelectorAll('[data-category]').forEach(function(other){
+        if(other !== cat){
+          other.classList.remove('open');
+          other.querySelector('.category-trigger').setAttribute('aria-expanded', 'false');
+        }
+      });
+      cat.classList.toggle('open', !isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+</script>
+
+<!-- Dish photo modal -->
+<div class="modal fade dish-modal" id="dishModal" tabindex="-1" aria-labelledby="mName" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <img class="modal-img" id="mImg" src="" alt="">
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-baseline gap-3">
+          <h2 class="m-name" id="mName"></h2>
+          <span class="m-price" id="mPrice"></span>
+        </div>
+        <p class="m-desc" id="mDesc"></p>
+        <div id="mTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script>
+  /* ---------- Dietary filters ---------- */
+  (function(){
+    var buttons = document.querySelectorAll('.filter-btn');
+    var categories = document.querySelectorAll('[data-category]');
+    var grid = document.getElementById('categoryGrid');
+
+    var noResults = document.createElement('p');
+    noResults.className = 'no-results is-hidden';
+    noResults.textContent = 'Nothing matches that filter yet.';
+    grid.parentNode.appendChild(noResults);
+
+    // remember each category's original count wording ("dishes" / "options")
+    categories.forEach(function(cat){
+      var label = cat.querySelector('.cat-count');
+      cat.dataset.word = label.textContent.replace(/^\d+\s*/, '');
+    });
+
+    function dishTags(dish){
+      return Array.prototype.map.call(dish.querySelectorAll('.dish-tag'), function(t){
+        return t.textContent.trim().toLowerCase();
+      });
+    }
+
+    function applyFilter(filter){
+      var anyVisible = false;
+
+      categories.forEach(function(cat){
+        var visible = 0;
+        cat.querySelectorAll('.dish').forEach(function(dish){
+          var show = filter === 'all' || dishTags(dish).indexOf(filter) !== -1;
+          dish.classList.toggle('is-hidden', !show);
+          if(show) visible++;
+        });
+
+        var label = cat.querySelector('.cat-count');
+        var word = visible === 1 ? cat.dataset.word.replace(/s$/, '') : cat.dataset.word;
+        label.textContent = visible + ' ' + word;
+
+        cat.classList.toggle('is-hidden', visible === 0);
+        if(visible === 0){
+          cat.classList.remove('open');
+          cat.querySelector('.category-trigger').setAttribute('aria-expanded', 'false');
+        } else {
+          anyVisible = true;
+        }
+      });
+
+      noResults.classList.toggle('is-hidden', anyVisible);
+    }
+
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        buttons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+  })();
+
+  /* ---------- Photo modal ---------- */
+  (function(){
+    var modalEl = document.getElementById('dishModal');
+    var modal = new bootstrap.Modal(modalEl);
+    var img = document.getElementById('mImg');
+
+    function openDish(dish){
+      var thumb = dish.querySelector('.dish-photo img');
+      var big = thumb.src.replace(/width=\d+/, 'width=960');
+      img.src = big;
+      img.alt = thumb.alt;
+      document.getElementById('mName').textContent = dish.querySelector('.dish-name').textContent;
+      document.getElementById('mPrice').textContent = dish.querySelector('.dish-price').textContent;
+      document.getElementById('mDesc').textContent = dish.querySelector('.dish-desc').textContent;
+      document.getElementById('mTags').innerHTML = Array.prototype.map.call(
+        dish.querySelectorAll('.dish-tag'),
+        function(t){ return '<span class="dish-tag">' + t.textContent + '</span>'; }
+      ).join('');
+      modal.show();
+    }
+
+    document.querySelectorAll('.dish').forEach(function(dish){
+      var photo = dish.querySelector('.dish-photo');
+      if(!photo) return;
+      photo.setAttribute('tabindex', '0');
+      photo.setAttribute('role', 'button');
+      photo.setAttribute('aria-label', 'View larger photo of ' + dish.querySelector('.dish-name').textContent);
+      photo.addEventListener('click', function(){ openDish(dish); });
+      photo.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openDish(dish); }
+      });
+    });
+
+    modalEl.addEventListener('hidden.bs.modal', function(){ img.src = ''; });
+  })();
+</script>
+
+<script>
+  /* ---------- Reservation form ---------- */
+  (function(){
+    // EDIT THIS: restaurant WhatsApp number in international format, digits only
+    // e.g. '2348030000000'. Leave empty to hide the WhatsApp button.
+    var WHATSAPP_NUMBER = '';
+
+    var form = document.getElementById('reserveForm');
+    var formWrap = document.getElementById('reserveFormWrap');
+    var confirmBox = document.getElementById('reserveConfirm');
+    var dateEl = document.getElementById('rDate');
+    var timeEl = document.getElementById('rTime');
+    var guestsEl = document.getElementById('rGuests');
+
+    // date: today onwards (local time)
+    function todayStr(){
+      var d = new Date();
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return d.toISOString().slice(0,10);
+    }
+    dateEl.min = todayStr();
+
+    // time slots every 30 min, 12:00 to 21:00 (last seating)
+    function label(h, m){
+      var suffix = h >= 12 ? 'PM' : 'AM';
+      var hh = h % 12 === 0 ? 12 : h % 12;
+      return hh + ':' + (m === 0 ? '00' : m) + ' ' + suffix;
+    }
+    for(var h = 12; h <= 21; h++){
+      [0,30].forEach(function(m){
+        if(h === 21 && m === 30) return;
+        var o = document.createElement('option');
+        o.value = o.textContent = label(h, m);
+        timeEl.appendChild(o);
+      });
+    }
+
+    // guests 1-12
+    guestsEl.innerHTML = '<option value="" selected disabled>Guests</option>';
+    for(var g = 1; g <= 12; g++){
+      var o = document.createElement('option');
+      o.value = g;
+      o.textContent = g + (g === 1 ? ' guest' : ' guests');
+      guestsEl.appendChild(o);
+    }
+
+    function prettyDate(v){
+      var p = v.split('-');
+      return new Date(p[0], p[1]-1, p[2]).toLocaleDateString('en-GB', {
+        weekday:'long', day:'numeric', month:'long', year:'numeric'
+      });
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      // block past dates even if the browser lets them through
+      if(dateEl.value && dateEl.value < todayStr()) dateEl.setCustomValidity('past');
+      else dateEl.setCustomValidity('');
+
+      form.classList.add('was-validated');
+      if(!form.checkValidity()){
+        var firstBad = form.querySelector(':invalid');
+        if(firstBad) firstBad.focus();
+        return;
+      }
+
+      var data = {
+        name: document.getElementById('rName').value.trim(),
+        phone: document.getElementById('rPhone').value.trim(),
+        date: prettyDate(dateEl.value),
+        time: timeEl.value,
+        guests: guestsEl.value + (guestsEl.value === '1' ? ' guest' : ' guests'),
+        notes: document.getElementById('rNotes').value.trim()
+      };
+
+      document.getElementById('cName').textContent = data.name;
+      document.getElementById('cDate').textContent = data.date;
+      document.getElementById('cTime').textContent = data.time;
+      document.getElementById('cGuests').textContent = data.guests;
+      document.getElementById('cPhone').textContent = data.phone;
+
+      var wa = document.getElementById('cWhatsapp');
+      var note = document.getElementById('cNote');
+      if(WHATSAPP_NUMBER){
+        var msg = 'Hello Taupe, I would like to reserve a table.\n' +
+          'Name: ' + data.name + '\nDate: ' + data.date + '\nTime: ' + data.time +
+          '\nGuests: ' + data.guests + '\nPhone: ' + data.phone +
+          (data.notes ? '\nNotes: ' + data.notes : '');
+        wa.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+        wa.classList.remove('is-hidden');
+        note.textContent = 'Tap the button to send your request to us on WhatsApp. We will confirm shortly.';
+      } else {
+        wa.classList.add('is-hidden');
+        note.textContent = 'Demo mode: set a WhatsApp number in the script to receive requests.';
+      }
+
+      formWrap.classList.add('is-hidden');
+      confirmBox.classList.remove('is-hidden');
+      confirmBox.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+
+    document.getElementById('cAgain').addEventListener('click', function(){
+      form.reset();
+      form.classList.remove('was-validated');
+      confirmBox.classList.add('is-hidden');
+      formWrap.classList.remove('is-hidden');
+      document.getElementById('rName').focus();
+    });
+  })();
+</script>
+
+</body>
+</html>
